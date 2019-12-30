@@ -21,13 +21,22 @@ class App extends Component {
     this.setState({ loading: false, users: res.data });
   }
 
+  searchUsers = async search => {
+    const res = await axios.get(
+      `https://api.github.com/search/users?q=${search}&
+      client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&
+      client_secret=${process.env.REACT_APP_GITHUB_CLIENT_ID}`
+    );
+    this.setState({ loading: false, users: res.data.items });
+  };
+
   render() {
     return (
       <div className='App'>
         <Navbar />
 
         <div className='container'>
-          <SearchBar />
+          <SearchBar searchUsers={this.searchUsers} />
           <Users users={this.state.users} loading={this.state.loading} />
         </div>
       </div>

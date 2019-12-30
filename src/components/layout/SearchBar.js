@@ -7,7 +7,8 @@ export default class SearchBar extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state.search);
+    this.props.searchUsers(this.state.search);
+    // this.setState({ search: '' });
   };
 
   handleChange = event =>
