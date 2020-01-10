@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const SearchBar = ({ setAlert, searchUsers, clearUsers, showClear }) => {
+const SearchBar = ({ createAlert, searchUsers, clearUsers, showClear }) => {
   const [search, setSearch] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
     if (search === '') {
-      setAlert('Please Enter Something...', 'light');
+      createAlert('Please Enter Something...', 'light');
     } else {
       searchUsers(search);
       setSearch('');
@@ -54,7 +54,7 @@ SearchBar.propTypes = {
   searchUsers: PropTypes.func.isRequired,
   clearUsers: PropTypes.func.isRequired,
   showClear: PropTypes.bool.isRequired,
-  setAlert: PropTypes.func.isRequired
+  createAlert: PropTypes.func.isRequired
 };
 
 export default SearchBar;
