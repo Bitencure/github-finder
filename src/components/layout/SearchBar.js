@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
+import GithubContext from '../../context/github/githubContext';
 
-const SearchBar = ({ createAlert, searchUsers, clearUsers, showClear }) => {
+const SearchBar = ({ createAlert }) => {
+  const githubContext = useContext(GithubContext);
+
+  const { users, clearUsers } = githubContext;
+
   const [search, setSearch] = useState('');
 
   const handleSubmit = e => {
@@ -9,15 +14,9 @@ const SearchBar = ({ createAlert, searchUsers, clearUsers, showClear }) => {
     if (search === '') {
       createAlert('Please Enter Something...', 'light');
     } else {
-      searchUsers(search);
+      githubContext.searchUsers(search);
       setSearch('');
     }
-  };
-
-  const handleReset = e => {
-    e.preventDefault();
-    clearUsers();
-    setSearch('');
   };
 
   const handleChange = event => setSearch(event.target.value);
@@ -37,11 +36,11 @@ const SearchBar = ({ createAlert, searchUsers, clearUsers, showClear }) => {
           value='Search'
           className='btn btn-dark btn-block'
         />
-        {showClear && (
+        {users.length > 0 && (
           <input
             type='reset'
             value='Clear'
-            onClick={handleReset}
+            onClick={clearUsers}
             className='btn btn-light btn-block'
           />
         )}
@@ -51,9 +50,6 @@ const SearchBar = ({ createAlert, searchUsers, clearUsers, showClear }) => {
 };
 
 SearchBar.propTypes = {
-  searchUsers: PropTypes.func.isRequired,
-  clearUsers: PropTypes.func.isRequired,
-  showClear: PropTypes.bool.isRequired,
   createAlert: PropTypes.func.isRequired
 };
 
