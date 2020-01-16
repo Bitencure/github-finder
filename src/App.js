@@ -1,56 +1,35 @@
-import React, { useState, Fragment } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
-import Users from './components/users/Users';
 import User from './components/users/User';
 import Alert from './components/layout/Alert';
+import Home from './components/pages/Home';
 import About from './components/pages/About';
-import SearchBar from './components/layout/SearchBar';
-
 import GithubState from './context/github/GithubState';
+import AlertState from './context/alert/AlertState';
+import NotFound from './components/pages/NotFound';
 
 import './App.css';
 
 const App = () => {
-  const [alert, setAlert] = useState(null);
-
-  const createAlert = (message, type) => {
-    setAlert({
-      message,
-      type
-    });
-
-    setTimeout(() => setAlert(null), 4000);
-  };
-
   return (
     <GithubState>
-      <Router>
-        <div className='App'>
-          <Navbar />
-          <div className='container'>
-            <Switch>
-              <Route
-                exact
-                path='/'
-                render={props => (
-                  <Fragment>
-                    <Alert alert={alert} />
-                    <SearchBar createAlert={createAlert} />
-                    <Users />
-                  </Fragment>
-                )}
-              />
-              <Route exact path='/about' component={About} />
-              <Route
-                exact
-                path='/user/:login'
-                render={props => <User {...props} />}
-              />
-            </Switch>
+      <AlertState>
+        <Router>
+          <div className='App'>
+            <Navbar />
+            <div className='container'>
+              <Alert />
+              <Switch>
+                <Route exact path='/' component={Home} />
+                <Route exact path='/about' component={About} />
+                <Route exact path='/user/:login' component={User} />
+                <Route component={NotFound} />
+              </Switch>
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+      </AlertState>
     </GithubState>
   );
 };

@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types';
 import GithubContext from '../../context/github/githubContext';
+import AlertContext from '../../context/alert/alertContext';
 
-const SearchBar = ({ createAlert }) => {
+const SearchBar = () => {
   const githubContext = useContext(GithubContext);
+  const alertContext = useContext(AlertContext);
 
   const { users, clearUsers } = githubContext;
 
@@ -12,7 +13,7 @@ const SearchBar = ({ createAlert }) => {
   const handleSubmit = e => {
     e.preventDefault();
     if (search === '') {
-      createAlert('Please Enter Something...', 'light');
+      alertContext.setAlert('Please Enter Something...', 'light');
     } else {
       githubContext.searchUsers(search);
       setSearch('');
@@ -47,10 +48,6 @@ const SearchBar = ({ createAlert }) => {
       </form>
     </div>
   );
-};
-
-SearchBar.propTypes = {
-  createAlert: PropTypes.func.isRequired
 };
 
 export default SearchBar;
